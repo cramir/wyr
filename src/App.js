@@ -1,28 +1,47 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component, Fragment } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import LoadingBar from 'react-redux-loading';
+import { handleInitialData } from './actions/shared';
+import Dashboard from './components/Dashboard';
+import NewQuestion from './components/NewQuestion';
+import QuestionPage from './components/QuestionPage';
+import Nav from './components/Nav';
 
 class App extends Component {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(handleInitialData());
+  }
+
   render() {
+    const { loading } = this.props;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Router>
+        <Fragment>
+          <LoadingBar />
+          <div className="container">
+            <Nav />
+            { loading === true
+              ? null
+              : (
+                <div>
+                  <Route path="/" exact component={Dashboard} />
+                  <Route path="/question/:id" component={QuestionPage} />
+                  <Route path="/add" component={NewQuestion} />
+                </div>
+              )}
+          </div>
+        </Fragment>
+      </Router>
     );
   }
 }
 
-export default App;
+function mapStateToProps({ authedUser }) {
+  return {
+    loading: authedUser === null,
+  };
+}
+
+export default connect(mapStateToProps)(App);
