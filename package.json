@@ -5,6 +5,7 @@
   "dependencies": {
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
+    "react-debounce-input": "^3.2.0",
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",
     "react-redux-loading": "^1.0.1",
