@@ -4,6 +4,7 @@ import { saveQuestionAnswer, saveQuestion } from '../util/api';
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
 export const TOGGLE_QUESTION = 'TOGGLE_QUESTION';
 export const ADD_QUESTION = 'ADD_QUESTION';
+export const ANSWER_QUESTION = 'ANSWER_QUESTION';
 
 function addQuestion(question) {
   return {
@@ -12,16 +13,16 @@ function addQuestion(question) {
   };
 }
 
-export function handleAddQuestion(text, replyingTo) {
+export function handleAddQuestion(optionOneText, optionTwoText) {
   return (dispatch, getState) => {
     const { authedUser } = getState();
 
     dispatch(showLoading());
 
     return saveQuestion({
-      text,
       author: authedUser,
-      replyingTo,
+      optionOneText,
+      optionTwoText,
     })
       .then(question => dispatch(addQuestion(question)))
       .then(() => dispatch(hideLoading()));
@@ -54,5 +55,28 @@ export function handleToggleQuestion(info) {
         dispatch(toggleQuestion(info));
         alert('The was an error liking the question. Try again.');
       });
+  };
+}
+
+function answerQuestion(question) {
+  return {
+    type: ANSWER_QUESTION,
+    question,
+  };
+}
+
+export function handleAnswerQuestion(qid, answer) {
+  return (dispatch, getState) => {
+    const { authedUser } = getState();
+
+    dispatch(showLoading());
+
+    return saveQuestionAnswer({
+      authedUser,
+      qid,
+      answer,
+    })
+      .then(() => dispatch(answerQuestion({ authedUser, qid, answer })))
+      .then(() => dispatch(hideLoading()));
   };
 }

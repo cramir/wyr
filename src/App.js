@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LoadingBar from 'react-redux-loading';
 import PropTypes from 'prop-types';
@@ -11,6 +11,7 @@ import Nav from './components/Nav';
 import Login from './components/Login';
 import { logoutUser } from './actions/authUser';
 import Leaderboard from './components/Leaderboard';
+import NotFound from './components/NotFound';
 
 
 class App extends Component {
@@ -26,9 +27,12 @@ class App extends Component {
     } if (authedUser) {
       return (
         <div>
-          <Route path="/" exact component={Dashboard} />
-          <Route path="/question/:id" component={QuestionPage} />
-          <Route path="/add" component={NewQuestion} />
+          <Switch>
+            <Route path="/" exact component={Dashboard} />
+            <Route path="/question/:id" component={QuestionPage} />
+            <Route path="/add" component={NewQuestion} />
+            <Route component={NotFound} />
+          </Switch>
         </div>
       );
     }

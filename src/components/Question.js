@@ -28,7 +28,6 @@ Question.propTypes = {
 function mapStateToProps({ questions }, { id }) {
   return {
     ...questions[id],
-
   };
 }
 

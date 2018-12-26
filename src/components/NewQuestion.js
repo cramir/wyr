@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DebounceInput } from 'react-debounce-input';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { handleAddQuestion } from '../actions/questions';
 
 class NewQuestion extends Component {
   constructor(props) {
@@ -8,6 +11,7 @@ class NewQuestion extends Component {
     this.state = {
       optionOne: '',
       optionTwo: '',
+      toHome: false,
     };
   }
 
@@ -16,12 +20,24 @@ class NewQuestion extends Component {
     this.setState(() => ({ [name]: value }));
   };
 
-  handleSubmit = () => {
-    console.log();
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const { dispatch, id } = this.props;
+    const { optionOne, optionTwo } = this.state;
+    dispatch(handleAddQuestion(optionOne, optionTwo));
+    this.setState(() => ({
+      optionOne: '',
+      optionTwo: '',
+      toHome: !id,
+    }));
   };
 
   render() {
-    const { optionOne, optionTwo } = this.state;
+    const { optionOne, optionTwo, toHome } = this.state;
+    const { history } = this.props;
+    if (toHome === true) {
+      return <Redirect push to="/" />;
+    }
     return (
       <div>
         <div>Would you rather?</div>
@@ -49,6 +65,9 @@ class NewQuestion extends Component {
   }
 }
 
-NewQuestion.propTypes = {};
+NewQuestion.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  id: PropTypes.string,
+};
 
-export default NewQuestion;
+export default connect()(NewQuestion);
