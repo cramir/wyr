@@ -12,6 +12,7 @@ class NewQuestion extends Component {
       optionOne: '',
       optionTwo: '',
       toHome: false,
+      noBlanks: false,
     };
   }
 
@@ -24,16 +25,24 @@ class NewQuestion extends Component {
     e.preventDefault();
     const { dispatch, id } = this.props;
     const { optionOne, optionTwo } = this.state;
-    dispatch(handleAddQuestion(optionOne, optionTwo));
-    this.setState(() => ({
-      optionOne: '',
-      optionTwo: '',
-      toHome: !id,
-    }));
+    if (optionOne !== '' && optionTwo !== '') {
+      dispatch(handleAddQuestion(optionOne, optionTwo));
+      this.setState(() => ({
+        optionOne: '',
+        optionTwo: '',
+        toHome: !id,
+      }));
+    } else {
+      this.setState(() => ({
+        noBlanks: true,
+      }));
+    }
   };
 
   render() {
-    const { optionOne, optionTwo, toHome } = this.state;
+    const {
+      optionOne, optionTwo, toHome, noBlanks,
+    } = this.state;
     if (toHome === true) {
       return <Redirect push to="/" />;
     }
@@ -41,6 +50,9 @@ class NewQuestion extends Component {
       <div className="new-question">
         <h1 className="heading">Add a new Question</h1>
         <div className="wyr">Would you rather?</div>
+        {noBlanks
+          && <div className="form-error">neither option can be blank</div>
+          }
         <form onSubmit={this.handleSubmit}>
           <DebounceInput
             type="text"

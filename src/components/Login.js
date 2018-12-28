@@ -30,7 +30,12 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  users: PropTypes.object.isRequired,
+  users: PropTypes.shape({
+    id: PropTypes.string,
+    questions: PropTypes.array,
+    answers: PropTypes.object,
+    name: PropTypes.string,
+  }).isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 

@@ -20,25 +20,6 @@ class App extends Component {
     dispatch(handleInitialData());
   }
 
-  initsial = () => {
-    const { loading, authedUser } = this.props;
-    if (loading === true) {
-      return null;
-    } if (authedUser) {
-      return (
-        <div className="rtt">
-          <Switch>
-            <Route path="/" exact component={Dashboard} />
-            <Route path="/question/:id" component={QuestionPage} />
-            <Route path="/add" component={NewQuestion} />
-            <Route component={NotFound} />
-          </Switch>
-        </div>
-      );
-    }
-    return (<Login />);
-  };
-
   logOut = () => {
     const { dispatch } = this.props;
     dispatch(logoutUser());
@@ -46,7 +27,7 @@ class App extends Component {
 
 
   render() {
-    const { loading, authedUser } = this.props;
+    const { authedUser } = this.props;
     return (
       <Router>
         <Fragment>
@@ -55,11 +36,13 @@ class App extends Component {
             <Nav authedUser={authedUser} logOut={this.logOut} />
             {authedUser ? (
               <div>
-                <Route path="/" exact component={Dashboard} />
-                <Route path="/question/:id" component={QuestionPage} />
-                <Route path="/add" component={NewQuestion} />
-                <Route path="/leaderboard" component={Leaderboard} />
-
+                <Switch>
+                  <Route path="/" exact component={Dashboard} />
+                  <Route path="/question/:id" component={QuestionPage} />
+                  <Route path="/add" component={NewQuestion} />
+                  <Route path="/leaderboard" component={Leaderboard} />
+                  <Route component={NotFound} />
+                </Switch>
               </div>
             )
               : <Login />
@@ -71,16 +54,15 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({ users, authedUser }) {
+function mapStateToProps({ authedUser }) {
   return {
-    loading: users === null,
     authedUser,
   };
 }
 
 App.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
+  authedUser: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(App);

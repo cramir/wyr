@@ -6,7 +6,7 @@ import Question from './Question';
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-    this.state = { showAnswered: true };
+    this.state = { showAnswered: false };
   }
 
   handleClick = () => {
@@ -40,7 +40,9 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
   questionsIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  answeredQuestions: PropTypes.object,
+  answeredQuestions: PropTypes.shape({
+    answers: PropTypes.object,
+  }).isRequired,
 };
 
 function mapStateToProps({ questions, users, authedUser }) {
