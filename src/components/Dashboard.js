@@ -17,29 +17,22 @@ class Dashboard extends Component {
     const { questionsIds, answeredQuestions } = this.props;
     const { showAnswered } = this.state;
     return (
-      <div>
-        <h3>this is the dashboard</h3>
-        <button type="button" onClick={this.handleClick}>{showAnswered ? 'Show Unanswered' : 'Show Answered'}</button>
-        <ul>
-          {showAnswered ? questionsIds.reduce((acc, i) => {
-            if (Object.prototype.hasOwnProperty.call(answeredQuestions, i)) {
-              acc.push((
-                <li key={i}>
-                  <Question id={i} />
-                </li>));
+      <div className="dashboard">
+        <h1>Would you rather?</h1>
+        <button className="dashboard-toggle" type="button" onClick={this.handleClick}>{showAnswered ? 'Show Unanswered' : 'Show Answered'}</button>
+        {showAnswered ? questionsIds.reduce((acc, i) => {
+          if (Object.prototype.hasOwnProperty.call(answeredQuestions, i)) {
+            acc.push((<Question id={i} key={i} />));
+          }
+          return acc;
+        }, [])
+          : questionsIds.reduce((acc, i) => {
+            if (!Object.prototype.hasOwnProperty.call(answeredQuestions, i)) {
+              acc.push((<Question id={i} key={i} />));
             }
             return acc;
-          }, [])
-            : questionsIds.reduce((acc, i) => {
-              if (!Object.prototype.hasOwnProperty.call(answeredQuestions, i)) {
-                acc.push((
-                  <li key={i}>
-                    <Question id={i} />
-                  </li>));
-              }
-              return acc;
-            }, [])}
-        </ul>
+          }, [])}
+
       </div>
     );
   }

@@ -12,7 +12,7 @@ import Login from './components/Login';
 import { logoutUser } from './actions/authUser';
 import Leaderboard from './components/Leaderboard';
 import NotFound from './components/NotFound';
-
+import './App.scss';
 
 class App extends Component {
   componentDidMount() {
@@ -26,7 +26,7 @@ class App extends Component {
       return null;
     } if (authedUser) {
       return (
-        <div>
+        <div className="rtt">
           <Switch>
             <Route path="/" exact component={Dashboard} />
             <Route path="/question/:id" component={QuestionPage} />

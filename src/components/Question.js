@@ -6,14 +6,10 @@ import { Link, withRouter } from 'react-router-dom';
 const Question = ({
   author, id, optionOne, optionTwo, timestamp,
 }) => (
-  <Link to={`/question/${id}`}>
-    <ul>
-      <li>{author}</li>
-      <li>{id}</li>
-      <li>{new Date(timestamp).toLocaleString()}</li>
-      <li>{optionOne.text}</li>
-      <li>{optionTwo.text}</li>
-    </ul>
+  <Link className="question-link" to={`/question/${id}`}>
+    <div className="question-link--wyr">WYR: {optionOne.text} or {optionOne.text}?</div>
+    <div className="question-link--author">by: {author}</div>
+    <div className="question-link--time">{new Date(timestamp).toLocaleString()}</div>
   </Link>
 );
 

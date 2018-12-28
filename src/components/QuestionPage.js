@@ -2,29 +2,34 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import {handleAnswerQuestion} from '../actions/questions';
+import { handleAnswerQuestion } from '../actions/questions';
 
-const QuestionPage = ({ question, found, answered, dispatch }) => {
+const QuestionPage = ({
+  question,
+  found,
+  answered,
+  dispatch,
+}) => {
   if (!found) {
     return <Redirect to="/404" />;
   } if (answered) {
     return (
-      <div>
-        <h1>Would you rather?</h1>
+      <div className="question-page">
+        <h1 className="heading">Would you rather?</h1>
         <div>You selected you would rather
             <strong> {question[answered].text } </strong>
             than
-            <strong> {answered ===  'optionOne' ? question.optionTwo.text : question.optionOne.text } </strong>
+            <strong> {answered ===  'optionOne' ? question.optionTwo.text : question.optionOne.text }. </strong>
         </div>
-          <div>this option has {question[answered].votes.length} votes</div>
-          <div>which equates to {(question[answered].votes.length / (question.optionOne.votes.length + question.optionTwo.votes.length) * 100).toFixed(2)}% of total votes</div>
+          <div>this option has <strong>{question[answered].votes.length}</strong> votes, which equates to <strong>{(question[answered].votes.length / (question.optionOne.votes.length + question.optionTwo.votes.length) * 100).toFixed(2)}%</strong> of total votes.</div>
       </div>
     );
   }
   return (
-    <div>
-      <h1>Would you rather?</h1>
+    <div className="question-page">
+      <h1 className="heading">Would you rather?</h1>
       <button type="button" onClick={() => dispatch(handleAnswerQuestion(question.id, 'optionOne'))}>{question.optionOne.text}</button>
+      <span>or</span>
       <button type="button" onClick={() => dispatch(handleAnswerQuestion(question.id, 'optionTwo'))}>{question.optionTwo.text}</button>
     </div>
   );
@@ -34,9 +39,9 @@ const QuestionPage = ({ question, found, answered, dispatch }) => {
 QuestionPage.propTypes = {
   found: PropTypes.bool.isRequired,
   question: PropTypes.shape({
-      optionOne: PropTypes.object,
-      optionTwo: PropTypes.object,
-      author: PropTypes.string,
+    optionOne: PropTypes.object,
+    optionTwo: PropTypes.object,
+    author: PropTypes.string,
   }).isRequired,
   answered: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
 };

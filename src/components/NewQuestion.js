@@ -34,13 +34,13 @@ class NewQuestion extends Component {
 
   render() {
     const { optionOne, optionTwo, toHome } = this.state;
-    const { history } = this.props;
     if (toHome === true) {
       return <Redirect push to="/" />;
     }
     return (
-      <div>
-        <div>Would you rather?</div>
+      <div className="new-question">
+        <h1 className="heading">Add a new Question</h1>
+        <div className="wyr">Would you rather?</div>
         <form onSubmit={this.handleSubmit}>
           <DebounceInput
             type="text"
@@ -58,7 +58,7 @@ class NewQuestion extends Component {
             onChange={this.handleChange}
             debounceTimeout="200"
           />
-          <button type="submit">Submit</button>
+          <button type="submit" className="submit">Submit</button>
         </form>
       </div>
     );
